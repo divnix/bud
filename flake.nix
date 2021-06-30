@@ -22,7 +22,7 @@
     # this helps to completely avoid invoking flake.lock.nix.
     # In a flake-only scenario, flake.lock.nix would disregard
     # inputs follows configurations.
-    rebind = src: inpt: _: args: rebound:
+    rebind = src: inpt: _: rebound: args:
       let
         inputs = inpt // { self = rebound; };
       in
@@ -47,7 +47,7 @@
       disable-repl = { flk.cmds.repl.enable = false; }; # it's not yet working
     };
 
-    # usage: inputs.flk { ... } newSelf;
+    # usage: inputs.flk newSelf { ... };
     __functor = rebind ./. flkInputs;
 
   };
