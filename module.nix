@@ -1,4 +1,4 @@
-{ name, config, lib, pkgs, ... }:
+{ name, config, lib, pkgs, hostConfig, editableFlakeRoot, ... }:
 with lib;
 let
   cfg = config.flk;
@@ -44,18 +44,49 @@ let
       '';
     });
 
-  flkCmd = pkgs.writeShellScriptBin name ''
+  host = let
+    partitionString = sep: s:
+      builtins.filter (v: builtins.isString v) (builtins.split "${sep}" s);
+    reversePartition = s: lib.reverseList (partitionString "\\." s);
+    rebake = l: builtins.concatStringsSep "." l;
+  in
+    if (hostConfig != null && hostConfig.networking.domain != null) then
+      rebake (reversePartition hostConfig.networking.domain + [ hostConfig.networking.hostName ])
+    else if hostConfig != null then
+      hostConfig.networking.hostName
+    # fall back to reverse dns from hostname --fqdn command
+    else "$(IFS='.'; parts=($(hostname --fqdn)); IFS=' '; HOST=$(for (( idx=\${#parts[@]}-1 ; idx>=0 ; idx-- )) ; do printf \"\${parts[idx]}.\"; done); echo \${HOST:: -1})"
+  ;
 
-    [[ -d "$DEVSHELL_ROOT" ]] ||
-      {
-        echo "This script must be run from devos's devshell" >&2
-        exit 1
-      }
+  flkRoot =
+    if editableFlakeRoot != null
+    then editableFlakeRoot
+    else "$DEVSHELL_ROOT"
+  ;
+
+
+  flkCmd = pkgs.writeShellScriptBin name ''
 
     shopt -s extglob
 
-    HOSTNAME="$(hostname)"
-    FLKROOT="$DEVSHELL_ROOT"
+    FLKROOT="${flkRoot}" # writable
+    HOST="${host}"
+    USER="$(whoami)"
+
+    # needs a FLKROOT
+    [[ -d "$FLKROOT" ]] ||
+      {
+        echo "This script must be run either from the flake's devshell or its root path must be specified" >&2
+        exit 1
+      }
+
+    # FLKROOT must be writable (no store path)
+    [[ -w "$FLKROOT" ]] ||
+      {
+        echo "You canot use the flake's store path for reference."
+             "This script requires a pointer to the writable flake root." >&2
+        exit 1
+      }
 
 
     # Contracts from script: $synopsis, $help, $description & `cmd` function
