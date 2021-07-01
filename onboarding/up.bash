@@ -11,7 +11,7 @@ cmd () {
   mkdir -p "$FLKROOT/up"
 
   # `sudo` is necessary for `btrfs subvolume show`
-  sudo nixos-generate-config --dir "$FLKROOT/up/$HOST"
+  sudo $(which nixos-generate-config) --dir "$FLKROOT/up/$HOST"
 
   printf "%s\n" \
     "{ suites, ... }:" \

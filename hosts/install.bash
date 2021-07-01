@@ -8,5 +8,5 @@ description="""
 # ---------------------------------------------------
 
 cmd () {
-  sudo nixos-install --flake "$FLKROOT#\"$1\"" "${@:2}"
+  sudo $(which nixos-install) --flake "$FLKROOT#\"$1\"" "${@:2}"
 }
