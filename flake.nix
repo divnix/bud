@@ -34,6 +34,7 @@
 
   in
   {
+    nixosModules.flk = import ./nixosModule.nix;
 
     defaultPackage = ufrContract supportedSystems ./. flkInputs;
 
