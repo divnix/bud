@@ -19,6 +19,9 @@ cmd () {
     "  imports = [" \
     "    ../up/$HOST/configuration.nix" \
     "  ] ++ suites.core;" \
+    "" \
+    "  flk.enable = true;" \
+    "  flk.localFlakeClone = \"$FLKROOT\";" \
     "}" > "$FLKROOT/hosts/up-$HOST.nix"
 
   git add -f \
