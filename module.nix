@@ -5,13 +5,32 @@ let
   entryOptions = {
     enable = mkEnableOption "cmd" // { default = true; };
 
+    synopsis = mkOption {
+      type = types.str;
+      description = ''
+        Synopsis.
+      '';
+    };
+    help = mkOption {
+      type = types.str;
+      description = ''
+        Short help.
+      '';
+    };
+    description = mkOption {
+      type = types.str;
+      default = "";
+      description = ''
+        Longer descriptions.
+      '';
+    };
+
     script = mkOption {
       type = types.path;
+      # convert it into an executable script
+      apply = script: pkgs.writeScript (builtins.baseNameOf "${script}") (builtins.readFile script);
       description = ''
         Script to run.
-        Scripts are required to:
-          - declare $synopsis, $help & $description
-          - declare cmd () function
       '';
     };
 
@@ -25,20 +44,18 @@ let
   };
 
   addUsage =
-    mapAttrs (k: v: builtins.removeAttrs v [ "script" "enable" ] // {
+    mapAttrs (k: v: builtins.removeAttrs v [ "script" "enable" "synopsis" "help" "description" ] // {
       text = ''
-        "$(source ${v.script}; echo $synopsis;)" \
-        "$(source ${v.script}; echo $help;)" \'';
+        "${v.synopsis}" "${v.help}" \'';
     });
 
   addCase =
-    mapAttrs (k: v: builtins.removeAttrs v [ "script" "enable" ] // {
+    mapAttrs (k: v: builtins.removeAttrs v [ "script" "enable" "synopsis" "help" "description" ] // {
       text = ''
         # ${k} subcommand
         "${k}")
           shift 1;
-          source ${v.script}
-          mkcmd "$@"
+          mkcmd "${v.synopsis}" "${v.help}" "${v.description}" "${v.script}" "$@"
           ;;
 
       '';
@@ -89,8 +106,12 @@ let
       }
 
 
-    # Contracts from script: $synopsis, $help, $description & `cmd` function
     mkcmd () {
+      synopsis=$1
+      help=$2
+      description=$3
+      script=$4
+      shift 4;
       case "$1" in
         "-h"|"help"|"--help")
           printf "%b\n" \
@@ -99,7 +120,7 @@ let
                  "\e[4mDescription\e[0m: $description"
           ;;
         *)
-          cmd "$@" # contract from script
+          exec env FLKROOT="$FLKROOT" HOST="$HOST" USER="$USER" $script "$@"
           ;;
       esac
     }
@@ -110,7 +131,6 @@ let
       "\e[4mUsage\e[0m: $(basename $0) COMMAND [ARGS]\n" \
       "\e[4mCommands\e[0m:"
 
-    # Contracts from script: $synopsis, $help
     printf "  %-30s %s\n\n" \
     ${textClosureMap id (addUsage cfg.cmds) (attrNames cfg.cmds)}
 
