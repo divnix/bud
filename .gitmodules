@@ -1,0 +1,3 @@
+[submodule "e2e/devos"]
+	path = e2e/devos
+	url = git@github.com:divnix/devos.git

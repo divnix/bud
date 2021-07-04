@@ -3,9 +3,10 @@
 
   inputs = {
     nixpkgs.url = "nixpkgs";
+    devshell.url = "github:numtide/devshell";
   };
 
-  outputs = { self, nixpkgs, ... }: let
+  outputs = { self, nixpkgs, devshell, ... }: let
 
     # Unofficial Flakes Roadmap - Polyfills
     # .. see: https://demo.hedgedoc.org/s/_W6Ve03GK#
@@ -28,6 +29,9 @@
       in
       import src ({ inherit inputs; } // args);
 
+    # Dependency Groups - Style
+    devShellInputs = { inherit nixpkgs devshell; };
+
     # .. we hope you like this style.
     # .. it's adopted by a growing number of projects.
     # Please consider adopting it if you want to help to improve flakes.
@@ -45,11 +49,13 @@
 
     # ... knows how to consume self.flkModules it's currently bound to
     flkModules = {
-      disable-repl = { flk.cmds.repl.enable = false; }; # it's not yet working
     };
 
     # usage: inputs.flk newSelf { ... };
     __functor = rebind ./. flkInputs;
+
+    # flk-local use
+    devShell = ufrContract supportedSystems ./shell.nix devShellInputs;
 
   };
 }

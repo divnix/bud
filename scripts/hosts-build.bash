@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 
-HOST="${1:-$HOST}"
+output="${2:-$1}"
 
-attr="$FLKROOT#nixosConfigurations.\"$HOST\".config.system.build.$2"
+if [[ ! "$output" == "$1" ]]; then
+  HOST="${1}"
+fi
+
+attr="$FLKROOT#nixosConfigurations.\"$HOST\".config.system.build.$output"
 
 nix build "$attr" "${@:3}"

@@ -2,7 +2,7 @@
 
   writeBashWithPaths = paths: name: script:
     pkgs.writers.writeBash name ''
-    export PATH="${lib.makeBinPath (paths ++ [ pkgs.coreutils ])}"
+    export PATH="${lib.makeBinPath (paths ++ [ pkgs.coreutils pkgs.git ])}"
     source ${script}
     '';
 
@@ -10,7 +10,7 @@ in { flk.cmds = with pkgs; {
 
   # Onboarding
   up = {
-    writer = writeBashWithPaths [ git nixos-install-tools ];
+    writer = writeBashWithPaths [ nixos-install-tools ];
     synopsis = "up";
     help = "Generate $FLKROOT/hosts/\${HOST//\./\/}/default.nix";
     script = ./scripts/onboarding-up.bash;

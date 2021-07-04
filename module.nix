@@ -99,6 +99,11 @@ let
     HOST="${host}"
     USER="$(logname)"
 
+    # mocks: for testing onlye
+    FLKROOT="''${TEST_FLKROOT:-$FLKROOT}"
+    HOST="''${TEST_HOST:-$HOST}"
+    USER="''${TEST_USER:-$USER}"
+
     # needs a FLKROOT
     [[ -d "$FLKROOT" ]] ||
       {
