@@ -11,7 +11,7 @@ printf "%s\n" \
   "{" \
   "  imports = [" \
   "    ./configuration.nix" \
-  "  ] ++ suites.core;" \
+  "  ] ++ suites.base;" \
   "" \
   "  flk.enable = true;" \
   "  flk.localFlakeClone = \"$FLKROOT\";" \
