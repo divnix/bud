@@ -14,9 +14,9 @@
 
   # function config ------------------------------------------------
 
-, flkModules ? pkgs.lib.optionals
-    ((inputs ? self) && (inputs.self ? flkModules))
-    (builtins.attrValues inputs.self.flkModules)
+, budModules ? pkgs.lib.optionals
+    ((inputs ? self) && (inputs.self ? budModules))
+    (builtins.attrValues inputs.self.budModules)
 
   # pass the host's config for inferring the reverse dns fqdn of this host
   # so that this script can accessor the _current_ host identifier in
@@ -31,25 +31,25 @@
 let
 
   lib = pkgs.lib;
-  name = "flk";
+  name = "bud";
   description = "Your highly customizable system ctl";
 
-  flkModule = import ./module.nix;
+  budModule = import ./module.nix;
   stdProfile = import ./stdProfile.nix;
 
   pkgsModule = { config, lib, ... }: {
     config = {
       _module.args.name = name;
-      _module.args.baseModules = [ flkModule ];
+      _module.args.baseModules = [ budModule ];
       _module.args.pkgs = lib.mkDefault pkgs;
       _module.args.hostConfig = hostConfig;
       _module.args.editableFlakeRoot = editableFlakeRoot;
     };
   };
 
-  flkUtilsModule = { pkgs, lib, ... }: {
+  budUtilsModule = { pkgs, lib, ... }: {
     config = {
-      _module.args.flkUtils = {
+      _module.args.budUtils = {
         writeBashWithPaths = import ./writeBashWithPaths.nix {
           inherit pkgs lib;
         };
@@ -58,10 +58,10 @@ let
   };
 
   evaled = lib.evalModules {
-    modules = [ pkgsModule flkUtilsModule flkModule stdProfile ] ++ flkModules;
+    modules = [ pkgsModule budUtilsModule budModule stdProfile ] ++ budModules;
   };
 
 in
-evaled.config.flk.cmd // {
+evaled.config.bud.cmd // {
   meta = { inherit description; };
 }

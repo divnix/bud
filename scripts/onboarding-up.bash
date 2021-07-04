@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-targetdir="$FLKROOT/hosts/${HOST//\./\/}"
+targetdir="$FLAKEROOT/hosts/${HOST//\./\/}"
 mkdir -p "$targetdir"
 
 # `sudo` is necessary for `btrfs subvolume show`
@@ -13,8 +13,8 @@ printf "%s\n" \
   "    ./configuration.nix" \
   "  ] ++ suites.base;" \
   "" \
-  "  flk.enable = true;" \
-  "  flk.localFlakeClone = \"$FLKROOT\";" \
+  "  bud.enable = true;" \
+  "  bud.localFlakeClone = \"$FLAKEROOT\";" \
   "}" > "$targetdir/default.nix"
 
 chown $USER:$(id -gn $USER) -R "$targetdir"

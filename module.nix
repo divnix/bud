@@ -1,7 +1,7 @@
 { name, config, lib, pkgs, hostConfig, editableFlakeRoot, ... }:
 with lib;
 let
-  cfg = config.flk;
+  cfg = config.bud;
   entryOptions = {
     enable = mkEnableOption "cmd" // { default = true; };
 
@@ -85,37 +85,37 @@ let
     else "$(IFS='.'; parts=($(hostname --fqdn)); IFS=' '; HOST=$(for (( idx=\${#parts[@]}-1 ; idx>=0 ; idx-- )) ; do printf \"\${parts[idx]}.\"; done); echo \${HOST:: -1})"
   ;
 
-  flkRoot =
+  flakeRoot =
     if editableFlakeRoot != null
     then editableFlakeRoot
     else "$DEVSHELL_ROOT"
   ;
 
 
-  flkCmd = pkgs.writeShellScriptBin name ''
+  budCmd = pkgs.writeShellScriptBin name ''
 
     export PATH="${makeBinPath [ pkgs.coreutils pkgs.hostname ]}"
 
     shopt -s extglob
 
-    FLKROOT="${flkRoot}" # writable
+    FLAKEROOT="${flakeRoot}" # writable
     HOST="${host}"
     USER="$(logname)"
 
     # mocks: for testing onlye
-    FLKROOT="''${TEST_FLKROOT:-$FLKROOT}"
+    FLAKEROOT="''${TEST_FLAKEROOT:-$FLAKEROOT}"
     HOST="''${TEST_HOST:-$HOST}"
     USER="''${TEST_USER:-$USER}"
 
-    # needs a FLKROOT
-    [[ -d "$FLKROOT" ]] ||
+    # needs a FLAKEROOT
+    [[ -d "$FLAKEROOT" ]] ||
       {
         echo "This script must be run either from the flake's devshell or its root path must be specified" >&2
         exit 1
       }
 
-    # FLKROOT must be writable (no store path)
-    [[ -w "$FLKROOT" ]] ||
+    # FLAKEROOT must be writable (no store path)
+    [[ -w "$FLAKEROOT" ]] ||
       {
         echo "You canot use the flake's store path for reference."
              "This script requires a pointer to the writable flake root." >&2
@@ -137,7 +137,7 @@ let
                  "\e[4mDescription\e[0m:\n$description"
           ;;
         *)
-          FLKROOT="$FLKROOT" HOST="$HOST" USER="$USER" exec $script "$@"
+          FLAKEROOT="$FLAKEROOT" HOST="$HOST" USER="$USER" exec $script "$@"
           ;;
       esac
     }
@@ -163,26 +163,26 @@ let
   '';
 in
 {
-  options.flk = {
+  options.bud = {
     cmds = mkOption {
       type = types.attrsOf (types.nullOr (types.submodule { options = entryOptions; }));
       default = { };
       internal = true;
       apply = as: filterAttrs (_: v: v.enable == true) as;
       description = ''
-        A list of sub commands appended to the `flk` case switch statement.
+        A list of sub commands appended to the `bud` case switch statement.
       '';
     };
     cmd = mkOption {
       internal = true;
       type = types.package;
       description = ''
-        This package contains the fully resolved `flk` script.
+        This package contains the fully resolved `bud` script.
       '';
     };
   };
 
-  config.flk = {
-    cmd = flkCmd;
+  config.bud = {
+    cmd = budCmd;
   };
 }

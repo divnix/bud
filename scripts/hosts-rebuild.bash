@@ -2,5 +2,5 @@
 
 HOST="${1:-$HOST}"
 
-attr="$FLKROOT#\"$HOST\""
+attr="$FLAKEROOT#\"$HOST\""
 nixos-rebuild --flake "$attr" "${@:2}"

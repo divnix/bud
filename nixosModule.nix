@@ -1,13 +1,13 @@
-# the flk function that still needs to be instantiated
-flk:
+# the bud function that still needs to be instantiated
+bud:
 
 { config, pkgs, lib, ... }:
 let
-  cfg = config.flk;
+  cfg = config.bud;
 in
 with lib; {
-  options.flk = {
-    enable = mkEnableOption "enable flk sysctl tool";
+  options.bud = {
+    enable = mkEnableOption "enable bud sysctl tool";
     localFlakeClone = mkOption {
       type = types.string;
       description = ''
@@ -21,7 +21,7 @@ with lib; {
 
   config = mkIf cfg.enable {
     environment.systemPackages = [
-      (flk { inherit pkgs; hostConfig = config; editableFlakeRoot = cfg.localFlakeClone; })
+      (bud { inherit pkgs; hostConfig = config; editableFlakeRoot = cfg.localFlakeClone; })
     ];
   };
 

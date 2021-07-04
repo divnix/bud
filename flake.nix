@@ -18,7 +18,7 @@
       ufrContract = import ./ufr-polyfills/ufrContract.nix;
 
       # Dependency Groups - Style
-      flkInputs = { inherit self nixpkgs; };
+      budInputs = { inherit self nixpkgs; };
 
       # repind this flake's functor to new self as part of the inputs
       # this helps to completely avoid invoking flake.lock.nix.
@@ -40,21 +40,21 @@
     in
     {
       lib.writeBashWithPaths = import ./writBashWithPaths.nix;
-      nixosModules.flk = import ./nixosModule.nix;
+      nixosModules.bud = import ./nixosModule.nix;
 
-      defaultPackage = ufrContract supportedSystems ./. flkInputs;
+      defaultPackage = ufrContract supportedSystems ./. budInputs;
 
       # The flake's functor ...
       # ... knows how to consume the self.overlays it's currently bound to
       overlays = { };
 
-      # ... knows how to consume self.flkModules it's currently bound to
-      flkModules = { };
+      # ... knows how to consume self.budModules it's currently bound to
+      budModules = { };
 
-      # usage: inputs.flk newSelf { ... };
-      __functor = rebind ./. flkInputs;
+      # usage: inputs.bud newSelf { ... };
+      __functor = rebind ./. budInputs;
 
-      # flk-local use
+      # bud-local use
       devShell = ufrContract supportedSystems ./shell.nix devShellInputs;
 
     };

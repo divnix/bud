@@ -24,7 +24,7 @@ let
       }
 
       trap 'trap_err' ERR
-      TEST_FLKROOT="$DEVSHELL_ROOT/${path}" TEST_HOST="${host}" TEST_USER="${user}" \
+      TEST_FLAKEROOT="$DEVSHELL_ROOT/${path}" TEST_HOST="${host}" TEST_USER="${user}" \
         ${pkgs.nixUnstable}/bin/nix run $DEVSHELL_ROOT -- ${name} ${args}
 
       git checkout -f "$head"
@@ -33,7 +33,7 @@ let
 
 in
 devshell.mkShell {
-  name = "flk";
+  name = "bud";
   packages = with pkgs; [
     fd
     nixpkgs-fmt

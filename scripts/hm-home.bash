@@ -7,7 +7,7 @@ fi
 HOST="${1:-$HOST}"
 USER="${2:-$USER}"
 
-attr="$FLKROOT#homeConfigurations.\"$USER@$HOST\".activationPackage"
+attr="$FLAKEROOT#homeConfigurations.\"$USER@$HOST\".activationPackage"
 
 if [[ "$switch" == "y" ]]; then
   nix build "$attr" "${@:3}" && result/activate && unlink result
