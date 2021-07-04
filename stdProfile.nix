@@ -1,9 +1,15 @@
-{ stdProfilePath, pkgs, lib, flkUtils, ... }: {
+{ stdProfilePath, pkgs, lib, flkUtils, ... }: let
+  # pkgs.nixos-install-tools does not build on darwin
+  installPkgs = (import "${toString pkgs.path}/nixos/lib/eval-config.nix" {
+          inherit (pkgs) system;
+              modules = [ ];
+  }).config.system.build;
+in {
   flk.cmds = with pkgs; {
 
     # Onboarding
     up = {
-      writer = flkUtils.writeBashWithPaths [ nixos-install-tools ];
+      writer = flkUtils.writeBashWithPaths [ installPkgs.nixos-generate-config ];
       synopsis = "up";
       help = "Generate $FLKROOT/hosts/\${HOST//\./\/}/default.nix";
       script = ./scripts/onboarding-up.bash;
@@ -55,7 +61,7 @@
       script = ./scripts/hosts-vm.bash;
     };
     install = {
-      writer = flkUtils.writeBashWithPaths [ nixos-install-tools ];
+      writer = flkUtils.writeBashWithPaths [ installPkgs.nixos-install ];
       synopsis = "install HOST [ARGS]";
       help = "Shortcut for nixos-install";
       script = ./scripts/hosts-install.bash;
