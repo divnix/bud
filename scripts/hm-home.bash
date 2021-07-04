@@ -1,9 +1,16 @@
 #!/usr/bin/env bash
+if [[ "$1" == "switch" ]]; then
+  shift 1;
+  switch=y
+fi
 
-ref="$FLKROOT#homeConfigurations.$2@$1.activationPackage"
-if [[ "$3" == "switch" ]]; then
-  nix build "$ref" && result/activate &&
-    unlink result
+HOST="${1:-$HOST}"
+USER="${2:-$USER}"
+
+attr="$FLKROOT#homeConfigurations.\"$USER@$HOST\".activationPackage"
+
+if [[ "$switch" == "y" ]]; then
+  nix build "$attr" "${@:3}" && result/activate && unlink result
 else
-  nix build "$ref" "${@:3}"
+  nix build "$attr" "${@:3}"
 fi

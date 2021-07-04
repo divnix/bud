@@ -1,3 +1,6 @@
 #!/usr/bin/env bash
 
-nixos-install --flake "$FLKROOT#\"$1\"" "${@:2}"
+HOST="${1:-$HOST}"
+
+attr="$FLKROOT#\"$HOST\""
+nixos-install --flake "$attr" "${@:2}"

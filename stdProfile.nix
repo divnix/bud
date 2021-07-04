@@ -26,18 +26,18 @@ in { flk.cmds = with pkgs; {
   update = {
     writer = writeBashWithPaths [ nixUnstable ];
     synopsis = "update [INPUT]";
-    help = "Update and commit the lock file, or specific input";
+    help = "Update and commit $FLKROOT/flake.lock file or specific input";
     script = ./scripts/utils-update.bash;
   };
   repl = {
     writer = writeBashWithPaths [ nixUnstable gnused ];
-    synopsis = "repl FLAKE";
+    synopsis = "repl [FLAKE]";
     help = "Enter a repl with the flake's outputs";
     script = (import ./scripts/utils-repl pkgs).outPath;
   };
   ssh-show = {
     writer = writeBashWithPaths [ openssh ];
-    synopsis = "ssh-show USER@HOSTNAME";
+    synopsis = "ssh-show HOST USER | USER@HOSTNAME";
     help = "Show target host's SSH ed25519 key";
     description = ''
       Use this script to quickly determine the target host
@@ -49,7 +49,7 @@ in { flk.cmds = with pkgs; {
   # Home-Manager
   home = {
     writer = writeBashWithPaths [ nixUnstable ];
-    synopsis = "home HOST USER [switch]";
+    synopsis = "home [switch] HOST USER";
     help = "Home-manager config of USER from HOST";
     script = ./scripts/hm-home.bash;
   };
@@ -64,14 +64,8 @@ in { flk.cmds = with pkgs; {
   vm = {
     writer = writeBashWithPaths [ nixUnstable ];
     synopsis = "vm HOST";
-    help = "Generate a vm for HOST";
+    help = "Generate & run a one-shot vm for HOST";
     script = ./scripts/hosts-vm.bash;
-  };
-  vm-run = {
-    writer = writeBashWithPaths [ nixUnstable ];
-    synopsis = "vm-run HOST";
-    help = "run a one-shot vm for HOST";
-    script = ./scripts/hosts-vm-run.bash;
   };
   install = {
     writer = writeBashWithPaths [ nixos-install-tools ];

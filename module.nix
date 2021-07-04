@@ -126,7 +126,7 @@ let
           printf "%b\n" \
                  "" \
                  "\e[4mUsage\e[0m: $synopsis   $help\n" \
-                 "\e[4mDescription\e[0m: $description"
+                 "\e[4mDescription\e[0m:\n$description"
           ;;
         *)
           FLKROOT="$FLKROOT" HOST="$HOST" USER="$USER" exec $script "$@"

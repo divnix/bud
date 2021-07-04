@@ -1,3 +1,7 @@
 #!/usr/bin/env bash
 
-nix build "$FLKROOT#nixosConfigurations.\"$1\".config.system.build.$2" "${@:3}"
+HOST="${1:-$HOST}"
+
+attr="$FLKROOT#nixosConfigurations.\"$HOST\".config.system.build.$2"
+
+nix build "$attr" "${@:3}"
