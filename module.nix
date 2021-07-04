@@ -56,24 +56,27 @@ let
 
   addCase =
     mapAttrs (k: v: builtins.removeAttrs v [ "script" "enable" "synopsis" "help" "description" ] // {
-      text = let
-        script' = v.writer (builtins.baseNameOf v.script) v.script;
-      in ''
-        # ${k} subcommand
-        "${k}")
-          shift 1;
-          mkcmd "${v.synopsis}" "${v.help}" "${v.description}" "${script'}" "$@"
-          ;;
+      text =
+        let
+          script' = v.writer (builtins.baseNameOf v.script) v.script;
+        in
+        ''
+          # ${k} subcommand
+          "${k}")
+            shift 1;
+            mkcmd "${v.synopsis}" "${v.help}" "${v.description}" "${script'}" "$@"
+            ;;
 
-      '';
+        '';
     });
 
-  host = let
-    partitionString = sep: s:
-      builtins.filter (v: builtins.isString v) (builtins.split "${sep}" s);
-    reversePartition = s: lib.reverseList (partitionString "\\." s);
-    rebake = l: builtins.concatStringsSep "." l;
-  in
+  host =
+    let
+      partitionString = sep: s:
+        builtins.filter (v: builtins.isString v) (builtins.split "${sep}" s);
+      reversePartition = s: lib.reverseList (partitionString "\\." s);
+      rebake = l: builtins.concatStringsSep "." l;
+    in
     if (hostConfig != null && hostConfig.networking.domain != null) then
       rebake (reversePartition hostConfig.networking.domain + [ hostConfig.networking.hostName ])
     else if hostConfig != null then

@@ -1,83 +1,87 @@
-{ stdProfilePath, pkgs, lib, ... }: let
+{ stdProfilePath, pkgs, lib, ... }:
+let
 
   writeBashWithPaths = paths: name: script:
     pkgs.writers.writeBash name ''
-    export PATH="${lib.makeBinPath (paths ++ [ pkgs.coreutils pkgs.git ])}"
-    source ${script}
+      export PATH="${lib.makeBinPath (paths ++ [ pkgs.coreutils pkgs.git ])}"
+      source ${script}
     '';
 
-in { flk.cmds = with pkgs; {
+in
+{
+  flk.cmds = with pkgs; {
 
-  # Onboarding
-  up = {
-    writer = writeBashWithPaths [ nixos-install-tools ];
-    synopsis = "up";
-    help = "Generate $FLKROOT/hosts/\${HOST//\./\/}/default.nix";
-    script = ./scripts/onboarding-up.bash;
-  };
-  get = {
-    writer = writeBashWithPaths [ nixUnstable ];
-    synopsis = "get (core|community) [DEST]";
-    help = "Copy the desired template to DEST";
-    script = ./scripts/onboarding-get.bash;
-  };
-  
-  # Utils
-  update = {
-    writer = writeBashWithPaths [ nixUnstable ];
-    synopsis = "update [INPUT]";
-    help = "Update and commit $FLKROOT/flake.lock file or specific input";
-    script = ./scripts/utils-update.bash;
-  };
-  repl = {
-    writer = writeBashWithPaths [ nixUnstable gnused ];
-    synopsis = "repl [FLAKE]";
-    help = "Enter a repl with the flake's outputs";
-    script = (import ./scripts/utils-repl pkgs).outPath;
-  };
-  ssh-show = {
-    writer = writeBashWithPaths [ openssh ];
-    synopsis = "ssh-show HOST USER | USER@HOSTNAME";
-    help = "Show target host's SSH ed25519 key";
-    description = ''
-      Use this script to quickly determine the target host
-      key for which to encrypt an agenix secret.
-    '';
-    script = ./scripts/utils-ssh-show.bash;
-  };
+    # Onboarding
+    up = {
+      writer = writeBashWithPaths [ nixos-install-tools ];
+      synopsis = "up";
+      help = "Generate $FLKROOT/hosts/\${HOST//\./\/}/default.nix";
+      script = ./scripts/onboarding-up.bash;
+    };
+    get = {
+      writer = writeBashWithPaths [ nixUnstable ];
+      synopsis = "get (core|community) [DEST]";
+      help = "Copy the desired template to DEST";
+      script = ./scripts/onboarding-get.bash;
+    };
 
-  # Home-Manager
-  home = {
-    writer = writeBashWithPaths [ nixUnstable ];
-    synopsis = "home [switch] HOST USER";
-    help = "Home-manager config of USER from HOST";
-    script = ./scripts/hm-home.bash;
-  };
+    # Utils
+    update = {
+      writer = writeBashWithPaths [ nixUnstable ];
+      synopsis = "update [INPUT]";
+      help = "Update and commit $FLKROOT/flake.lock file or specific input";
+      script = ./scripts/utils-update.bash;
+    };
+    repl = {
+      writer = writeBashWithPaths [ nixUnstable gnused ];
+      synopsis = "repl [FLAKE]";
+      help = "Enter a repl with the flake's outputs";
+      script = (import ./scripts/utils-repl pkgs).outPath;
+    };
+    ssh-show = {
+      writer = writeBashWithPaths [ openssh ];
+      synopsis = "ssh-show HOST USER | USER@HOSTNAME";
+      help = "Show target host's SSH ed25519 key";
+      description = ''
+        Use this script to quickly determine the target host
+        key for which to encrypt an agenix secret.
+      '';
+      script = ./scripts/utils-ssh-show.bash;
+    };
 
-  # Hosts
-  build = {
-    writer = writeBashWithPaths [ nixUnstable ];
-    synopsis = "build HOST BUILD";
-    help = "Build a variant of your configuration from system.build";
-    script = ./scripts/hosts-build.bash;
-  };
-  vm = {
-    writer = writeBashWithPaths [ nixUnstable ];
-    synopsis = "vm HOST";
-    help = "Generate & run a one-shot vm for HOST";
-    script = ./scripts/hosts-vm.bash;
-  };
-  install = {
-    writer = writeBashWithPaths [ nixos-install-tools ];
-    synopsis = "install HOST [ARGS]";
-    help = "Shortcut for nixos-install";
-    script = ./scripts/hosts-install.bash;
-  };
-  rebuild = {
-    writer = writeBashWithPaths [ nixos-rebuild ];
-    synopsis = "rebuild HOST (switch|boot|test)";
-    help = "Shortcut for nixos-rebuild";
-    script = ./scripts/hosts-rebuild.bash;
-  };
+    # Home-Manager
+    home = {
+      writer = writeBashWithPaths [ nixUnstable ];
+      synopsis = "home [switch] HOST USER";
+      help = "Home-manager config of USER from HOST";
+      script = ./scripts/hm-home.bash;
+    };
 
-}; }
+    # Hosts
+    build = {
+      writer = writeBashWithPaths [ nixUnstable ];
+      synopsis = "build HOST BUILD";
+      help = "Build a variant of your configuration from system.build";
+      script = ./scripts/hosts-build.bash;
+    };
+    vm = {
+      writer = writeBashWithPaths [ nixUnstable ];
+      synopsis = "vm HOST";
+      help = "Generate & run a one-shot vm for HOST";
+      script = ./scripts/hosts-vm.bash;
+    };
+    install = {
+      writer = writeBashWithPaths [ nixos-install-tools ];
+      synopsis = "install HOST [ARGS]";
+      help = "Shortcut for nixos-install";
+      script = ./scripts/hosts-install.bash;
+    };
+    rebuild = {
+      writer = writeBashWithPaths [ nixos-rebuild ];
+      synopsis = "rebuild HOST (switch|boot|test)";
+      help = "Shortcut for nixos-rebuild";
+      script = ./scripts/hosts-rebuild.bash;
+    };
+
+  };
+}

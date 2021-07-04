@@ -16,11 +16,12 @@ let
 
   LoadFlake = path: builtins.getFlake (toString path);
 
-in {
+in
+{
   inherit
     Channels
     Flake
     LoadFlake
     Me
-  ;
+    ;
 }

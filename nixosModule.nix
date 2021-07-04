@@ -3,7 +3,7 @@ flk:
 
 { config, pkgs, lib, ... }:
 let
- cfg = config.flk;
+  cfg = config.flk;
 in
 with lib; {
   options.flk = {
