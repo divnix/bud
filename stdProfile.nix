@@ -30,10 +30,10 @@ in { flk.cmds = with pkgs; {
     script = ./scripts/utils-update.bash;
   };
   repl = {
-    writer = writeBashWithPaths [ fup-repl ];
+    writer = writeBashWithPaths [ nixUnstable gnused ];
     synopsis = "repl FLAKE";
     help = "Enter a repl with the flake's outputs";
-    script = ./scripts/utils-repl.bash;
+    script = (import ./scripts/utils-repl pkgs).outPath;
   };
   ssh-show = {
     writer = writeBashWithPaths [ openssh ];
