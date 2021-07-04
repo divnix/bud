@@ -37,7 +37,7 @@ let
   flkModule = import ./module.nix;
   stdProfile = import ./stdProfile.nix;
 
-  pkgsModule = { config, ... }: {
+  pkgsModule = { config, lib, ... }: {
     config = {
       _module.args.name = name;
       _module.args.baseModules = [ flkModule ];
@@ -47,8 +47,18 @@ let
     };
   };
 
+  flkUtilsModule = { pkgs, lib, ... }: {
+    config = {
+      _module.args.flkUtils = {
+        writeBashWithPaths = import ./writeBashWithPaths.nix {
+          inherit pkgs lib;
+        };
+      };
+    };
+  };
+
   evaled = lib.evalModules {
-    modules = [ pkgsModule flkModule stdProfile ] ++ flkModules;
+    modules = [ pkgsModule flkUtilsModule flkModule stdProfile ] ++ flkModules;
   };
 
 in

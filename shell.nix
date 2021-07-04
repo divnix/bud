@@ -72,7 +72,6 @@ devshell.mkShell {
     (test "e2e/devos" "NixOS" "" "install" "-h")
     (test "e2e/devos" "NixOS" "" "rebuild" "-h")
     (test "e2e/devos" "NixOS" "" "vm" "")
-    (test "e2e/devos" "" "" "get" "core")
     (test "e2e/devos" "NixOS.example.com" "" "up" "")
     (test "e2e/devos" "NixOS" "root" "ssh-show" "")
     (test "e2e/devos" "" "" "update" "")

@@ -39,6 +39,7 @@
 
     in
     {
+      lib.writeBashWithPaths = import ./writBashWithPaths.nix;
       nixosModules.flk = import ./nixosModule.nix;
 
       defaultPackage = ufrContract supportedSystems ./. flkInputs;
