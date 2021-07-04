@@ -25,10 +25,15 @@ let
       '';
     };
 
+    writer = mkOption {
+      type = types.functionTo (types.functionTo types.package);
+      description = ''
+        Script to run.
+      '';
+    };
+
     script = mkOption {
       type = types.path;
-      # convert it into an executable script
-      apply = script: pkgs.writeScript (builtins.baseNameOf "${script}") (builtins.readFile script);
       description = ''
         Script to run.
       '';
@@ -51,11 +56,13 @@ let
 
   addCase =
     mapAttrs (k: v: builtins.removeAttrs v [ "script" "enable" "synopsis" "help" "description" ] // {
-      text = ''
+      text = let
+        script' = v.writer (builtins.baseNameOf v.script) v.script;
+      in ''
         # ${k} subcommand
         "${k}")
           shift 1;
-          mkcmd "${v.synopsis}" "${v.help}" "${v.description}" "${v.script}" "$@"
+          mkcmd "${v.synopsis}" "${v.help}" "${v.description}" "${script'}" "$@"
           ;;
 
       '';
@@ -84,11 +91,13 @@ let
 
   flkCmd = pkgs.writeShellScriptBin name ''
 
+    export PATH="${makeBinPath [ pkgs.coreutils pkgs.hostname ]}"
+
     shopt -s extglob
 
     FLKROOT="${flkRoot}" # writable
     HOST="${host}"
-    USER="$(whoami)"
+    USER="$(logname)"
 
     # needs a FLKROOT
     [[ -d "$FLKROOT" ]] ||
@@ -120,7 +129,7 @@ let
                  "\e[4mDescription\e[0m: $description"
           ;;
         *)
-          exec env FLKROOT="$FLKROOT" HOST="$HOST" USER="$USER" $script "$@"
+          FLKROOT="$FLKROOT" HOST="$HOST" USER="$USER" exec $script "$@"
           ;;
       esac
     }

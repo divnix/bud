@@ -4,7 +4,7 @@ targetdir="$FLKROOT/hosts/${HOST//\./\/}"
 mkdir -p "$targetdir"
 
 # `sudo` is necessary for `btrfs subvolume show`
-sudo $(which nixos-generate-config) --dir "$targetdir"
+nixos-generate-config --dir "$targetdir"
 
 printf "%s\n" \
   "{ suites, ... }:" \
@@ -17,6 +17,6 @@ printf "%s\n" \
   "  flk.localFlakeClone = \"$FLKROOT\";" \
   "}" > "$targetdir/default.nix"
 
-sudo chown $(id -u):$(id -g) -R "$targetdir"
+chown $USER:$(id -gn $USER) -R "$targetdir"
 
 git add -f "$targetdir"

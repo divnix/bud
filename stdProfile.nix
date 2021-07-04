@@ -1,13 +1,22 @@
-{ stdProfilePath, ... }:
-{ flk.cmds = {
+{ stdProfilePath, pkgs, lib, ... }: let
+
+  writeBashWithPaths = paths: name: script:
+    pkgs.writers.writeBash name ''
+    export PATH="${lib.makeBinPath (paths ++ [ pkgs.coreutils ])}"
+    source ${script}
+    '';
+
+in { flk.cmds = with pkgs; {
 
   # Onboarding
   up = {
+    writer = writeBashWithPaths [ git nixos-install-tools ];
     synopsis = "up";
     help = "Generate $FLKROOT/hosts/\${HOST//\./\/}/default.nix";
     script = ./scripts/onboarding-up.bash;
   };
   get = {
+    writer = writeBashWithPaths [ nixUnstable ];
     synopsis = "get (core|community) [DEST]";
     help = "Copy the desired template to DEST";
     script = ./scripts/onboarding-get.bash;
@@ -15,16 +24,19 @@
   
   # Utils
   update = {
+    writer = writeBashWithPaths [ nixUnstable ];
     synopsis = "update [INPUT]";
     help = "Update and commit the lock file, or specific input";
     script = ./scripts/utils-update.bash;
   };
   repl = {
+    writer = writeBashWithPaths [ fup-repl ];
     synopsis = "repl FLAKE";
     help = "Enter a repl with the flake's outputs";
     script = ./scripts/utils-repl.bash;
   };
   ssh-show = {
+    writer = writeBashWithPaths [ openssh ];
     synopsis = "ssh-show USER@HOSTNAME";
     help = "Show target host's SSH ed25519 key";
     description = ''
@@ -36,6 +48,7 @@
 
   # Home-Manager
   home = {
+    writer = writeBashWithPaths [ nixUnstable ];
     synopsis = "home HOST USER [switch]";
     help = "Home-manager config of USER from HOST";
     script = ./scripts/hm-home.bash;
@@ -43,26 +56,31 @@
 
   # Hosts
   build = {
+    writer = writeBashWithPaths [ nixUnstable ];
     synopsis = "build HOST BUILD";
     help = "Build a variant of your configuration from system.build";
     script = ./scripts/hosts-build.bash;
   };
   vm = {
+    writer = writeBashWithPaths [ nixUnstable ];
     synopsis = "vm HOST";
     help = "Generate a vm for HOST";
     script = ./scripts/hosts-vm.bash;
   };
   vm-run = {
+    writer = writeBashWithPaths [ nixUnstable ];
     synopsis = "vm-run HOST";
     help = "run a one-shot vm for HOST";
     script = ./scripts/hosts-vm-run.bash;
   };
   install = {
+    writer = writeBashWithPaths [ nixos-install-tools ];
     synopsis = "install HOST [ARGS]";
     help = "Shortcut for nixos-install";
     script = ./scripts/hosts-install.bash;
   };
   rebuild = {
+    writer = writeBashWithPaths [ nixos-rebuild ];
     synopsis = "rebuild HOST (switch|boot|test)";
     help = "Shortcut for nixos-rebuild";
     script = ./scripts/hosts-rebuild.bash;
