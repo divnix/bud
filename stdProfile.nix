@@ -9,7 +9,7 @@ in {
 
     # Onboarding
     up = {
-      writer = budUtils.writeBashWithPaths [ installPkgs.nixos-generate-config ];
+      writer = budUtils.writeBashWithPaths [ installPkgs.nixos-generate-config git mercurial ];
       synopsis = "up";
       help = "Generate $FLAKEROOT/hosts/\${HOST//\./\/}/default.nix";
       script = ./scripts/onboarding-up.bash;
@@ -17,13 +17,13 @@ in {
 
     # Utils
     update = {
-      writer = budUtils.writeBashWithPaths [ nixUnstable ];
+      writer = budUtils.writeBashWithPaths [ nixUnstable git mercurial ];
       synopsis = "update [INPUT]";
       help = "Update and commit $FLAKEROOT/flake.lock file or specific input";
       script = ./scripts/utils-update.bash;
     };
     repl = {
-      writer = budUtils.writeBashWithPaths [ nixUnstable gnused ];
+      writer = budUtils.writeBashWithPaths [ nixUnstable gnused git mercurial ];
       synopsis = "repl [FLAKE]";
       help = "Enter a repl with the flake's outputs";
       script = (import ./scripts/utils-repl pkgs).outPath;
@@ -41,7 +41,7 @@ in {
 
     # Home-Manager
     home = {
-      writer = budUtils.writeBashWithPaths [ nixUnstable ];
+      writer = budUtils.writeBashWithPaths [ nixUnstable git mercurial ];
       synopsis = "home [switch] HOST USER";
       help = "Home-manager config of USER from HOST";
       script = ./scripts/hm-home.bash;
@@ -49,25 +49,25 @@ in {
 
     # Hosts
     build = {
-      writer = budUtils.writeBashWithPaths [ nixUnstable ];
+      writer = budUtils.writeBashWithPaths [ nixUnstable git mercurial ];
       synopsis = "build HOST BUILD";
       help = "Build a variant of your configuration from system.build";
       script = ./scripts/hosts-build.bash;
     };
     vm = {
-      writer = budUtils.writeBashWithPaths [ nixUnstable ];
+      writer = budUtils.writeBashWithPaths [ nixUnstable git mercurial ];
       synopsis = "vm HOST";
       help = "Generate & run a one-shot vm for HOST";
       script = ./scripts/hosts-vm.bash;
     };
     install = {
-      writer = budUtils.writeBashWithPaths [ installPkgs.nixos-install ];
+      writer = budUtils.writeBashWithPaths [ installPkgs.nixos-install git mercurial ];
       synopsis = "install HOST [ARGS]";
       help = "Shortcut for nixos-install";
       script = ./scripts/hosts-install.bash;
     };
     rebuild = {
-      writer = budUtils.writeBashWithPaths [ nixos-rebuild ];
+      writer = budUtils.writeBashWithPaths [ nixos-rebuild git mercurial ];
       synopsis = "rebuild HOST (switch|boot|test)";
       help = "Shortcut for nixos-rebuild";
       script = ./scripts/hosts-rebuild.bash;
