@@ -1,10 +1,12 @@
-{ stdProfilePath, pkgs, lib, budUtils, ... }: let
+{ stdProfilePath, pkgs, lib, budUtils, ... }:
+let
   # pkgs.nixos-install-tools does not build on darwin
   installPkgs = (import "${toString pkgs.path}/nixos/lib/eval-config.nix" {
-          inherit (pkgs) system;
-              modules = [ ];
+    inherit (pkgs) system;
+    modules = [ ];
   }).config.system.build;
-in {
+in
+{
   bud.cmds = with pkgs; {
 
     # Onboarding
@@ -41,7 +43,7 @@ in {
 
     # Home-Manager
     home = {
-      writer = budUtils.writeBashWithPaths [ nixUnstable git mercurial ];
+      writer = budUtils.writeBashWithPaths [ nixUnstable git mercurial coreutils ];
       synopsis = "home [switch] HOST USER";
       help = "Home-manager config of USER from HOST";
       script = ./scripts/hm-home.bash;
