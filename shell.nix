@@ -67,7 +67,7 @@ devshell.mkShell {
       command = "fd --extension nix --exec nix-instantiate --parse --quiet {} >/dev/null";
     }
 
-    (test "e2e/devos" "NixOS" "root" "home" "")
+    (test "e2e/devos" "NixOS" "nixos" "home" "")
     (test "e2e/devos" "NixOS" "" "build" "NixOS toplevel")
     (test "e2e/devos" "NixOS" "" "install" "-h")
     (test "e2e/devos" "NixOS" "" "rebuild" "-h")

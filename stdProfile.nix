@@ -44,8 +44,8 @@ in
     # Home-Manager
     home = {
       writer = budUtils.writeBashWithPaths [ nixUnstable git mercurial coreutils ];
-      synopsis = "home [switch] HOST USER";
-      help = "Home-manager config of USER from HOST";
+      synopsis = "home [switch] (user@fqdn | USER HOST | USER)";
+      help = "Home-manager config of USER from HOST or host-less portable USER for current architecture";
       script = ./scripts/hm-home.bash;
     };
 
