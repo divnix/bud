@@ -70,6 +70,8 @@ let
         '';
     });
 
+  arch = pkgs.system;
+
   host =
     let
       partitionString = sep: s:
@@ -101,11 +103,13 @@ let
     FLAKEROOT="${flakeRoot}" # writable
     HOST="${host}"
     USER="$(logname)"
+    ARCH="${arch}"
 
     # mocks: for testing onlye
     FLAKEROOT="''${TEST_FLAKEROOT:-$FLAKEROOT}"
     HOST="''${TEST_HOST:-$HOST}"
     USER="''${TEST_USER:-$USER}"
+    ARCH="''${TEST_ARCH:-$ARCH}"
 
     # needs a FLAKEROOT
     [[ -d "$FLAKEROOT" ]] ||
@@ -137,7 +141,7 @@ let
                  "\e[4mDescription\e[0m:\n$description"
           ;;
         *)
-          FLAKEROOT="$FLAKEROOT" HOST="$HOST" USER="$USER" exec $script "$@"
+          FLAKEROOT="$FLAKEROOT" HOST="$HOST" USER="$USER" ARCH="$ARCH" exec $script "$@"
           ;;
       esac
     }
