@@ -1,8 +1,15 @@
 # the bud function that still needs to be instantiated
 bud:
-
-{ config, pkgs, lib, ... }:
+{ config
+, pkgs
+, lib
+  # we require a reference to the flake
+  # in order to collect self.budModules
+, self
+, ...
+}:
 let
+  reboudBud = bud self;
   cfg = config.bud;
 in
 with lib; {
@@ -21,7 +28,7 @@ with lib; {
 
   config = mkIf cfg.enable {
     environment.systemPackages = [
-      (bud { inherit pkgs; hostConfig = config; editableFlakeRoot = cfg.localFlakeClone; })
+      (reboundBud { inherit pkgs; hostConfig = config; editableFlakeRoot = cfg.localFlakeClone; })
     ];
   };
 

@@ -40,7 +40,8 @@
     in
     {
       lib.writeBashWithPaths = import ./writBashWithPaths.nix;
-      nixosModules.bud = import ./nixosModule.nix;
+      nixosModules.bud = import ./nixosModule.nix self;
+      devshellModules.bud = import ./devshellModule.nix self;
 
       defaultPackage = ufrContract supportedSystems ./. budInputs;
 
