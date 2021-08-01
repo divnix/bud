@@ -41,12 +41,13 @@ in
       script = ./scripts/utils-ssh-show.bash;
     };
 
-    # Home-Manager
-    home = {
-      writer = budUtils.writeBashWithPaths [ nixUnstable git mercurial coreutils ];
-      synopsis = "home [switch] (user@fqdn | USER HOST | USER)";
-      help = "Home-manager config of USER from HOST or host-less portable USER for current architecture";
-      script = ./scripts/hm-home.bash;
+    # Deploy
+
+    yeet = {
+      writer = budUtils.writeBashWithPaths [ nixUnstable git mercureial coreutils openssh deploy-rs.deploy-rs ];
+      synopsis = "yeet [ ... ]";
+      help = "Yeet profile configurations at hosts via deploy-rs";
+      script = ./scripts/yeet.bash;
     };
 
     # Hosts
@@ -61,18 +62,6 @@ in
       synopsis = "vm HOST";
       help = "Generate & run a one-shot vm for HOST";
       script = ./scripts/hosts-vm.bash;
-    };
-    install = {
-      writer = budUtils.writeBashWithPaths [ installPkgs.nixos-install git mercurial coreutils ];
-      synopsis = "install HOST [ARGS]";
-      help = "Shortcut for nixos-install";
-      script = ./scripts/hosts-install.bash;
-    };
-    rebuild = {
-      writer = budUtils.writeBashWithPaths [ nixos-rebuild git mercurial coreutils ];
-      synopsis = "rebuild HOST (switch|boot|test)";
-      help = "Shortcut for nixos-rebuild";
-      script = ./scripts/hosts-rebuild.bash;
     };
 
   };
