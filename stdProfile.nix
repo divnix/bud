@@ -51,25 +51,25 @@ in
 
     # Hosts
     build = {
-      writer = budUtils.writeBashWithPaths [ nixUnstable git mercurial ];
+      writer = budUtils.writeBashWithPaths [ nixUnstable git mercurial coreutils ];
       synopsis = "build HOST BUILD";
       help = "Build a variant of your configuration from system.build";
       script = ./scripts/hosts-build.bash;
     };
     vm = {
-      writer = budUtils.writeBashWithPaths [ nixUnstable git mercurial ];
+      writer = budUtils.writeBashWithPaths [ nixUnstable git mercurial coreutils ];
       synopsis = "vm HOST";
       help = "Generate & run a one-shot vm for HOST";
       script = ./scripts/hosts-vm.bash;
     };
     install = {
-      writer = budUtils.writeBashWithPaths [ installPkgs.nixos-install git mercurial ];
+      writer = budUtils.writeBashWithPaths [ installPkgs.nixos-install git mercurial coreutils ];
       synopsis = "install HOST [ARGS]";
       help = "Shortcut for nixos-install";
       script = ./scripts/hosts-install.bash;
     };
     rebuild = {
-      writer = budUtils.writeBashWithPaths [ nixos-rebuild git mercurial ];
+      writer = budUtils.writeBashWithPaths [ nixos-rebuild git mercurial coreutils ];
       synopsis = "rebuild HOST (switch|boot|test)";
       help = "Shortcut for nixos-rebuild";
       script = ./scripts/hosts-rebuild.bash;
