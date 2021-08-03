@@ -1,12 +1,18 @@
 {
-  description = "Flk - a highly composable system ctl command";
+  description = "Bud - a highly composable system ctl command";
+
+  nixConfig.extra-experimental-features = "nix-command flakes ca-references";
+  nixConfig.extra-substituters = "https://nrdxp.cachix.org https://nix-community.cachix.org";
+  nixConfig.extra-trusted-public-keys = "nrdxp.cachix.org-1:Fc5PSqY2Jm1TrWfm88l6cvGWwz3s93c6IOifQWnhNW4= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=";
 
   inputs = {
-    nixpkgs.url = "nixpkgs";
+    nixpkgs.url = "github:nixos/nixpkgs/release-21.05";
     devshell.url = "github:numtide/devshell";
+    beautysh.url = "github:lovesegfault/beautysh";
+    beautysh.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, devshell, ... }:
+  outputs = { self, nixpkgs, devshell, beautysh, ... }:
     let
 
       # Unofficial Flakes Roadmap - Polyfills
@@ -31,7 +37,7 @@
         import src ({ inherit inputs; } // args);
 
       # Dependency Groups - Style
-      devShellInputs = { inherit nixpkgs devshell; };
+      devShellInputs = { inherit nixpkgs devshell beautysh; };
 
       # .. we hope you like this style.
       # .. it's adopted by a growing number of projects.

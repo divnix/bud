@@ -1,7 +1,14 @@
 { inputs, system ? builtins.currentSystem }:
 let
 
-  pkgs = import inputs.nixpkgs { inherit system; config = { }; overlays = [ ]; };
+  pkgs = import inputs.nixpkgs {
+    inherit system; config = { };
+    overlays = [
+      (final: prev: {
+        beautysh = inputs.beautysh.defaultPackage."${final.system}";
+      })
+    ];
+  };
   devshell = import inputs.devshell { inherit pkgs system; };
 
   withCategory = category: attrset: attrset // { inherit category; };
@@ -66,7 +73,18 @@ devshell.mkShell {
       help = "Check Nix parsing";
       command = "fd --extension nix --exec nix-instantiate --parse --quiet {} >/dev/null";
     }
-
+    {
+      name = "fmt-bash";
+      help = "Format bash scripts";
+      command = ''
+        set -euo pipefail
+        export PATH=${pkgs.beautysh}/bin:${pkgs.findutils}/bin:$PATH
+        for path in $(find "$DEVSHELL_ROOT/scripts" -name '*.bash')
+        do
+           beautysh "$@" "$path"
+        done
+      '';
+    }
     (test "e2e/devos" "NixOS" "nixos" "home" "")
     (test "e2e/devos" "NixOS" "" "build" "NixOS toplevel")
     (test "e2e/devos" "NixOS" "" "install" "-h")
@@ -75,6 +93,5 @@ devshell.mkShell {
     (test "e2e/devos" "NixOS.example.com" "" "up" "")
     (test "e2e/devos" "NixOS" "root" "ssh-show" "")
     (test "e2e/devos" "" "" "update" "")
-
   ];
 }
