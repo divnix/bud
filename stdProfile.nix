@@ -24,6 +24,12 @@ in
       help = "Update and commit $FLAKEROOT/flake.lock file or specific input";
       script = ./scripts/utils-update.bash;
     };
+    burn = {
+      writer = budUtils.writeBashWithPaths [ nixUnstable git mercurial coreutils gawk util-linux fzf pv ];
+      synopsis = "burn";
+      help = "Burn an ISO on a removable device that you interactively choose (build the iso first)";
+      script = ./scripts/burn.bash;
+    };
     repl = {
       writer = budUtils.writeBashWithPaths [ nixUnstable gnused git mercurial ];
       synopsis = "repl [FLAKE]";
