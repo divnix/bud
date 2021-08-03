@@ -1,12 +1,16 @@
 {
   description = "Flk - a highly composable system ctl command";
+  # binary cache for beautysh
+  nixConfig.extra-substituters = "https://bernardo.cachix.org";
+  nixConfig.extra-trusted-public-keys = "bernardo.cachix.org-1:5rW6M6ckTmQ7sYQhnSiwql8svUI1/4wNjAhS+mh8snI=";
 
   inputs = {
     nixpkgs.url = "nixpkgs";
     devshell.url = "github:numtide/devshell";
+    beautysh = { url = "github:lovesegfault/beautysh"; };
   };
 
-  outputs = { self, nixpkgs, devshell, ... }:
+  outputs = { self, nixpkgs, devshell, beautysh, ... }:
     let
 
       # Unofficial Flakes Roadmap - Polyfills
@@ -31,7 +35,7 @@
         import src ({ inherit inputs; } // args);
 
       # Dependency Groups - Style
-      devShellInputs = { inherit nixpkgs devshell; };
+      devShellInputs = { inherit nixpkgs devshell beautysh; };
 
       # .. we hope you like this style.
       # .. it's adopted by a growing number of projects.
