@@ -9,7 +9,7 @@ bud:
 , ...
 }:
 let
-  reboudBud = bud self;
+  reboundBud = bud self;
   cfg = config.bud;
 in
 with lib; {
