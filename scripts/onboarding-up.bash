@@ -7,15 +7,15 @@ mkdir -p "$targetdir"
 nixos-generate-config --dir "$targetdir"
 
 printf "%s\n" \
-  "{ suites, ... }:" \
-  "{" \
-  "  imports = [" \
-  "    ./configuration.nix" \
-  "  ] ++ suites.base;" \
-  "" \
-  "  bud.enable = true;" \
-  "  bud.localFlakeClone = \"$FLAKEROOT\";" \
-  "}" > "$targetdir/default.nix"
+    "{ suites, ... }:" \
+    "{" \
+    "  imports = [" \
+    "    ./configuration.nix" \
+    "  ] ++ suites.base;" \
+    "" \
+    "  bud.enable = true;" \
+    "  bud.localFlakeClone = \"$FLAKEROOT\";" \
+    "}" > "$targetdir/default.nix"
 
 chown $USER:$(id -gn $USER) -R "$targetdir"
 
