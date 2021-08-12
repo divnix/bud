@@ -37,7 +37,7 @@ in
       script = (import ./scripts/utils-repl pkgs).outPath;
     };
     ssh-show = {
-      writer = budUtils.writeBashWithPaths [ openssh ];
+      writer = budUtils.writeBashWithPaths [ openssh coreutils ];
       synopsis = "ssh-show HOST USER | USER@HOSTNAME";
       help = "Show target host's SSH ed25519 key";
       description = ''

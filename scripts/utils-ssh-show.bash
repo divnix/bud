@@ -9,7 +9,7 @@ else
     USER="${2:-$USER}"
 fi
 
-if [[ "$user" == "root" ]]; then
+if [[ "$USER" == "root" ]]; then
     cmd="cat /etc/ssh/ssh_host_ed25519_key.pub"
 else
     cmd="cat ~/.ssh/id_ed25519.pub"
