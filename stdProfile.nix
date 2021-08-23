@@ -18,6 +18,12 @@ in
     };
 
     # Utils
+    cfg = {
+      writer = budUtils.writeBashWithPaths [ git coreutils exa gnugrep ];
+      synopsis = "cfg [SUBCOMMAND]";
+      help = "Manage (add, remove, etc.) your configuration";
+      script = ./scripts/cfg.bash;
+    };
     update = {
       writer = budUtils.writeBashWithPaths [ nixUnstable git mercurial ];
       synopsis = "update [INPUT]";
