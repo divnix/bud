@@ -31,7 +31,7 @@ in
       script = ./scripts/burn.bash;
     };
     repl = {
-      writer = budUtils.writeBashWithPaths [ nixUnstable gnused git mercurial ];
+      writer = budUtils.writeBashWithPaths [ nixUnstable gnused git mercurial coreutils ];
       synopsis = "repl [FLAKE]";
       help = "Enter a repl with the flake's outputs";
       script = (import ./scripts/utils-repl pkgs).outPath;
