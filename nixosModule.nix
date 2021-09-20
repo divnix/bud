@@ -16,9 +16,9 @@ with lib; {
   options.bud = {
     enable = mkEnableOption "enable bud sysctl tool";
     localFlakeClone = mkOption {
-      type = types.string;
+      type = types.path;
       description = ''
-        A string reference to the local (editable) copy
+        A path reference to the local (editable) copy
         of your system flake. This is used as reference
         so that the scripts can do work on your flake,
         such as for example updating inputs.
