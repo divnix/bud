@@ -31,7 +31,7 @@ jobs:
 
     - name: Bash format check
       run: |
-        nix -Lv develop -c fmt-bash -- --check
+        nix -Lv develop -c -- fmt-bash --check
 
     # Check bud top level command
     - run: nix run --show-trace .
@@ -43,4 +43,3 @@ jobs:
     #     known_hosts: |
     #     <remote host>: <ssh-ed25519>
     # - run: nix run --show-trace . -- ssh-show-ed25519 <remote host>
-
