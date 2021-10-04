@@ -90,7 +90,7 @@ let
   flakeRoot =
     if editableFlakeRoot != null
     then editableFlakeRoot
-    else "$DEVSHELL_ROOT"
+    else "$PRJ_ROOT"
   ;
 
 

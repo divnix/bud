@@ -20,7 +20,7 @@ let
     command = ''
       set -e
 
-      cd $DEVSHELL_ROOT/${path}
+      cd $PRJ_ROOT/${path}
 
       head=$(git rev-parse HEAD)
 
@@ -31,8 +31,8 @@ let
       }
 
       trap 'trap_err' ERR
-      TEST_FLAKEROOT="$DEVSHELL_ROOT/${path}" TEST_HOST="${host}" TEST_USER="${user}" \
-        ${pkgs.nixUnstable}/bin/nix run $DEVSHELL_ROOT -- ${name} ${args}
+      TEST_FLAKEROOT="$PRJ_ROOT/${path}" TEST_HOST="${host}" TEST_USER="${user}" \
+        ${pkgs.nixUnstable}/bin/nix run $PRJ_ROOT -- ${name} ${args}
 
       git checkout -f "$head"
     '';
@@ -66,7 +66,7 @@ devshell.mkShell {
     {
       name = "fmt";
       help = "Check Nix formatting";
-      command = "nixpkgs-fmt \${@} $DEVSHELL_ROOT";
+      command = "nixpkgs-fmt \${@} $PRJ_ROOT";
     }
     {
       name = "evalnix";
@@ -79,7 +79,7 @@ devshell.mkShell {
       command = ''
         set -euo pipefail
         export PATH=${pkgs.beautysh}/bin:${pkgs.findutils}/bin:$PATH
-        for path in $(find "$DEVSHELL_ROOT/scripts" -name '*.bash')
+        for path in $(find "$PRJ_ROOT/scripts" -name '*.bash')
         do
            beautysh "$@" "$path"
         done

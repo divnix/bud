@@ -9,11 +9,11 @@
         "poetry2nix": "poetry2nix"
       },
       "locked": {
-        "lastModified": 1627571355,
-        "narHash": "sha256-iB+s0R/d/bBISo9+JtyytNtS2YMP5oLFqcyfqhXO1qU=",
+        "lastModified": 1630693543,
+        "narHash": "sha256-7Sly3ReaJZw60Qo0rpfN4jF6zy94nwQz6ENgUUFzJfg=",
         "owner": "lovesegfault",
         "repo": "beautysh",
-        "rev": "1ad178d756f1f7e77d5215b768bc5c9d4ff8e4fa",
+        "rev": "5609593961b70428f58d5c1b4b25cdda43b0d0bd",
         "type": "github"
       },
       "original": {
@@ -24,11 +24,11 @@
     },
     "devshell": {
       "locked": {
-        "lastModified": 1625086391,
-        "narHash": "sha256-IpNPv1v8s4L3CoxhwcgZIitGpcrnNgnj09X7TA0QV3k=",
+        "lastModified": 1632436039,
+        "narHash": "sha256-OtITeVWcKXn1SpVEnImpTGH91FycCskGBPqmlxiykv4=",
         "owner": "numtide",
         "repo": "devshell",
-        "rev": "4b5ac7cf7d9a1cc60b965bb51b59922f2210cbc7",
+        "rev": "7a7a7aa0adebe5488e5abaec688fd9ae0f8ea9c6",
         "type": "github"
       },
       "original": {
@@ -54,11 +54,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1630529325,
-        "narHash": "sha256-+ZP6DzO6c1Hpq/16oWdUrRgPrtQ3Kc+SzxZjs3VxMyE=",
+        "lastModified": 1633325558,
+        "narHash": "sha256-dy/jNEMjUtUyl8HisGbgOvvpTvMLdD1xlwPlDsQzQno=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "3e09410da091230c725faa80af462557c94d11d9",
+        "rev": "2406a0b2b8fe127410d5eae46076f9e4b08b0030",
         "type": "github"
       },
       "original": {
