@@ -34,8 +34,7 @@ jobs:
         nix -Lv develop -c -- fmt-bash --check
 
     # Check bud top level command
-    - run: nix run --show-trace .
-
+    - run: nix -Lv develop -c nix run .
     # TODO: possible testing strategies for ssh-show command
     # - uses: shimataro/ssh-key-action@v2
     #   with:
