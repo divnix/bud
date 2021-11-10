@@ -1,6 +1,7 @@
 { pkgs, lib }:
-paths: name: script:
-pkgs.writers.writeBash name ''
+paths: extra: script:
+pkgs.writers.writeBash (builtins.baseNameOf script) ''
   export PATH="${lib.makeBinPath paths}"
+  ${extra}
   source ${script}
 ''

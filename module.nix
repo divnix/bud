@@ -39,6 +39,15 @@ let
       '';
     };
 
+    extraScript = mkOption {
+      type = types.str;
+      default = "";
+      description = ''
+        extra script
+      '';
+    };
+
+
     deps = mkOption {
       type = types.listOf types.str;
       default = [ ];
@@ -49,16 +58,16 @@ let
   };
 
   addUsage =
-    mapAttrs (k: v: builtins.removeAttrs v [ "script" "enable" "synopsis" "help" "description" ] // {
+    mapAttrs (k: v: builtins.removeAttrs v [ "script" "enable" "synopsis" "help" "description" "extraScript" ] // {
       text = ''
         "${v.synopsis}" "${v.help}" \'';
     });
 
   addCase =
-    mapAttrs (k: v: builtins.removeAttrs v [ "script" "enable" "synopsis" "help" "description" ] // {
+    mapAttrs (k: v: builtins.removeAttrs v [ "script" "enable" "synopsis" "help" "description" "extraScript" ] // {
       text =
         let
-          script' = v.writer (builtins.baseNameOf v.script) v.script;
+          script' = v.writer v.extraScript v.script;
         in
         ''
           # ${k} subcommand
