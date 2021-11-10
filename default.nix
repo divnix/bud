@@ -27,12 +27,14 @@
   # so that this script can execute operations on that flake, such as updates, etc.
 , editableFlakeRoot ? null
 
+, budStdProfile ? true
+
+, name ? "bud"
+, description ? "Your highly customizable system ctl"
 }:
 let
 
   lib = pkgs.lib;
-  name = "bud";
-  description = "Your highly customizable system ctl";
 
   budModule = import ./module.nix;
   stdProfile = import ./stdProfile.nix;
@@ -58,7 +60,7 @@ let
   };
 
   evaled = lib.evalModules {
-    modules = [ pkgsModule budUtilsModule budModule stdProfile ] ++ budModules;
+    modules = [ pkgsModule budUtilsModule budModule ] ++ budModules ++ lib.optionals budStdProfile [ stdProfile ];
   };
 
 in
