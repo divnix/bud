@@ -18,6 +18,9 @@
     ((inputs ? self) && (inputs.self ? budModules))
     (builtins.attrValues inputs.self.budModules)
 
+, budModulesName ? pkgs.lib.optionals
+    ((inputs ? self) && (inputs.self ? budModules))
+    (builtins.attrNames inputs.self.budModules)
   # pass the host's config for inferring the reverse dns fqdn of this host
   # so that this script can accessor the _current_ host identifier in
   # self.nixosConfigurations.<identifier>
@@ -59,8 +62,10 @@ let
     };
   };
 
+  mergedBudModules = if name == (toString budModulesName) then budModules else [ ];
+
   evaled = lib.evalModules {
-    modules = [ pkgsModule budUtilsModule budModule ] ++ budModules ++ lib.optionals budStdProfile [ stdProfile ];
+    modules = [ pkgsModule budUtilsModule budModule ] ++ mergedBudModules ++ lib.optionals budStdProfile [ stdProfile ];
   };
 
 in
