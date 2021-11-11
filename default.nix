@@ -62,10 +62,12 @@ let
     };
   };
 
-  mergedBudModules = if name == (toString budModulesName) then budModules else [ ];
+  mergedBudModules = (if (toString (lib.intersectLists [ "${name}" ]
+    budModulesName)) == "${name}" then [ inputs.self.budModules."${name}" ] else [ ]);
 
   evaled = lib.evalModules {
-    modules = [ pkgsModule budUtilsModule budModule ] ++ mergedBudModules ++ lib.optionals budStdProfile [ stdProfile ];
+    modules = [ pkgsModule budUtilsModule budModule ] ++ lib.optionals budStdProfile [ stdProfile ]
+      ++ mergedBudModules;
   };
 
 in
