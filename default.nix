@@ -45,6 +45,7 @@ let
   pkgsModule = { config, lib, ... }: {
     config = {
       _module.args.name = name;
+      _module.args.inputs = inputs;
       _module.args.baseModules = [ budModule ];
       _module.args.pkgs = lib.mkDefault pkgs;
       _module.args.hostConfig = hostConfig;
