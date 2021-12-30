@@ -80,7 +80,7 @@ let
       rebake = l: builtins.concatStringsSep "." l;
     in
     if (hostConfig != null && hostConfig.networking.domain != null) then
-      rebake (reversePartition hostConfig.networking.domain + [ hostConfig.networking.hostName ])
+      rebake (reversePartition hostConfig.networking.domain ++ [ hostConfig.networking.hostName ])
     else if hostConfig != null then
       hostConfig.networking.hostName
     # fall back to reverse dns from hostname --fqdn command
