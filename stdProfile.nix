@@ -3,7 +3,7 @@ let
   # pkgs.nixos-install-tools does not build on darwin
   installPkgs = (import "${toString pkgs.path}/nixos/lib/eval-config.nix" {
     inherit (pkgs) system;
-    modules = [ ];
+    modules = [ { nix.package = pkgs.nixUnstable; } ];
   }).config.system.build;
 in
 {
@@ -75,7 +75,7 @@ in
       script = ./scripts/hosts-install.bash;
     };
     rebuild = {
-      writer = budUtils.writeBashWithPaths [ nixos-rebuild git mercurial coreutils ];
+      writer = budUtils.writeBashWithPaths [ installPkgs.nixos-rebuild git mercurial coreutils ];
       synopsis = "rebuild HOST (switch|boot|test)";
       help = "Shortcut for nixos-rebuild";
       script = ./scripts/hosts-rebuild.bash;
