@@ -6,10 +6,9 @@
   nixConfig.extra-trusted-public-keys = "nrdxp.cachix.org-1:Fc5PSqY2Jm1TrWfm88l6cvGWwz3s93c6IOifQWnhNW4= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/release-21.05";
+    nixpkgs.url = "github:nixos/nixpkgs/release-21.11";
     devshell.url = "github:numtide/devshell";
     beautysh.url = "github:lovesegfault/beautysh";
-    beautysh.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = { self, nixpkgs, devshell, beautysh, ... }:
