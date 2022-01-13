@@ -50,7 +50,7 @@ let
   budUtilsModule = { pkgs, lib, ... }: {
     config = {
       _module.args.budUtils = {
-        writeBashWithPaths = import ./lib/writeBashWithPaths.nix {
+        runner = import ./lib/runner.nix {
           inherit pkgs lib;
         };
       };

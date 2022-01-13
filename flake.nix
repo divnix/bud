@@ -44,7 +44,7 @@
 
     in
     {
-      lib.writeBashWithPaths = import ./lib/writeBashWithPaths.nix;
+      lib.runner = import ./lib/runner.nix;
       nixosModules.bud = import ./modules/nixosModule.nix self;
       devshellModules.bud = import ./modules/devshellModule.nix self;
 
