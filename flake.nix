@@ -1,7 +1,7 @@
 {
   description = "Bud - a highly composable system ctl command";
 
-  nixConfig.extra-experimental-features = "nix-command flakes ca-references";
+  nixConfig.extra-experimental-features = "nix-command flakes";
   nixConfig.extra-substituters = "https://nrdxp.cachix.org https://nix-community.cachix.org";
   nixConfig.extra-trusted-public-keys = "nrdxp.cachix.org-1:Fc5PSqY2Jm1TrWfm88l6cvGWwz3s93c6IOifQWnhNW4= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=";
 
@@ -44,9 +44,9 @@
 
     in
     {
-      lib.writeBashWithPaths = import ./writeBashWithPaths.nix;
-      nixosModules.bud = import ./nixosModule.nix self;
-      devshellModules.bud = import ./devshellModule.nix self;
+      lib.writeBashWithPaths = import ./lib/writeBashWithPaths.nix;
+      nixosModules.bud = import ./modules/nixosModule.nix self;
+      devshellModules.bud = import ./modules/devshellModule.nix self;
 
       defaultPackage = ufrContract supportedSystems ./. budInputs;
 
