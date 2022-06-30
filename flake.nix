@@ -8,7 +8,6 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/release-21.11";
     devshell.url = "github:numtide/devshell";
-    beautysh.url = "github:lovesegfault/beautysh";
   };
 
   outputs = { self, nixpkgs, devshell, beautysh, ... }:
