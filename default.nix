@@ -34,8 +34,8 @@ let
   name = "bud";
   description = "Your highly customizable system ctl";
 
-  budModule = import ./module.nix;
-  stdProfile = import ./stdProfile.nix;
+  budModule = import ./modules;
+  stdProfile = import ./lib/stdProfile.nix;
 
   pkgsModule = { config, lib, ... }: {
     config = {
@@ -50,7 +50,7 @@ let
   budUtilsModule = { pkgs, lib, ... }: {
     config = {
       _module.args.budUtils = {
-        writeBashWithPaths = import ./writeBashWithPaths.nix {
+        runner = import ./lib/runner.nix {
           inherit pkgs lib;
         };
       };

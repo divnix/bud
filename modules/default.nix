@@ -32,6 +32,14 @@ let
       '';
     };
 
+    preScript = mkOption {
+      type = types.str;
+      default = "";
+      description = ''
+        add extra script
+      '';
+    };
+
     script = mkOption {
       type = types.path;
       description = ''
@@ -49,16 +57,16 @@ let
   };
 
   addUsage =
-    mapAttrs (k: v: builtins.removeAttrs v [ "script" "enable" "synopsis" "help" "description" ] // {
+    mapAttrs (k: v: builtins.removeAttrs v [ "script" "enable" "synopsis" "help" "description" "preScript" ] // {
       text = ''
         "${v.synopsis}" "${v.help}" \'';
     });
 
   addCase =
-    mapAttrs (k: v: builtins.removeAttrs v [ "script" "enable" "synopsis" "help" "description" ] // {
+    mapAttrs (k: v: builtins.removeAttrs v [ "script" "enable" "synopsis" "help" "description" "preScript" ] // {
       text =
         let
-          script' = v.writer (builtins.baseNameOf v.script) v.script;
+          script' = v.writer v.preScript v.script;
         in
         ''
           # ${k} subcommand
